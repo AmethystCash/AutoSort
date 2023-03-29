@@ -14,14 +14,12 @@ cap.set(4, 480)
 
 while True:
     success, frame = cap.read()
-
     cv2.imshow('frame', frame)
 
     key = cv2.waitKey(1)
-    if key == ord(' '):
+    if key == ord(' '):  # press Space to take a pic that then gets sent to the api
         _, img_encoded = cv2.imencode('.jpg', frame)
         response = requests.post(API_URL, headers=headers, data=img_encoded.tobytes())
-
         if response.ok:
             predictions = response.json()
             print(predictions)
@@ -30,8 +28,9 @@ while True:
             print(f"Request failed with status code {response.status_code}")
         break
 
-    elif key == 27:  # 27 is the ASCII code for the Esc key
+    elif key == 27:  # press Esc to quit
         break
 
 cap.release()
 cv2.destroyAllWindows()
+
