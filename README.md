@@ -24,3 +24,7 @@ We're using a RaspberryPi to run our scripts. That part is located in our 3d-pri
 ### AutoSort in action
 
 (videos and images of autosort doing autosort)
+
+### Roadmap
+
+(insert a roadmap)
