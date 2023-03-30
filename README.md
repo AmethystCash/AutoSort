@@ -10,11 +10,17 @@ AutoSort! A bin that can automate the process of sorting rubbish for you. It doe
 1. A barcode scanner
 2. Machine vision
 
-
 ### The setup
 
 We're using a RaspberryPi to run our scripts. That part is located in our 3d-printed bin. (write more details here)
 (image of the design)
+
+### How does it work?
+
+Each frame we check if there's something in the bin, with either a sensor, a fuzzy search, or more machine vision. We then look for a barcode, if nothing is found we ask our Machine vision API to provide us that information. Then the bin opens one of its compartments for the rubbish to fall into.
+
+The barcode part is made possible by https://world.openfoodfacts.org/.
+The machine vision part by https://huggingface.co/yangy50/garbage-classification.
 
 
 ### How to get started?
