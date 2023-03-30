@@ -20,17 +20,6 @@ To actually make the flaps move we're going to use linear actuators.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 ### How does it work?
 
 Each frame we check if there's something in the bin, with either a sensor, a fuzzy search, or more machine vision. We then look for a barcode, if nothing is found we ask our Machine vision API to provide us that information. Then the bin opens one of its compartments for the rubbish to fall into. Here's a flow-chart ilustrating that process:
@@ -46,7 +35,7 @@ The machine vision part by https://huggingface.co/yangy50/garbage-classification
 
 ### How to get started?
 
-(improve code further and explain how to get started)
+(improve code further and explain how to get it to work)
 
 ### AutoSort in action
 
@@ -54,4 +43,5 @@ The machine vision part by https://huggingface.co/yangy50/garbage-classification
 
 ### Roadmap
 
-(insert a roadmap)
+1. Get the code to display which door to open
+2. (wip)
