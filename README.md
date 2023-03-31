@@ -51,7 +51,7 @@ Machine Vision Garbage Classification: https://huggingface.co/yangy50/garbage-cl
 
 ### AutoSort in action
 
-(videos and images of autosort doing autosort)
+(videos and images of autosort doing autosort, coming soon)
 
 ### Roadmap
 
