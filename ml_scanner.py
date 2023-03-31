@@ -4,8 +4,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+# the machine vision script
+
 API_URL = "https://api-inference.huggingface.co/models/yangy50/garbage-classification"
-headers = {"Authorization": f"Bearer {os.getenv('API_URL')}"}
+headers = {"Authorization": f"Bearer {os.getenv('API_KEY')}"}
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
