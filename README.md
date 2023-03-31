@@ -29,8 +29,12 @@ Open Food Facts: https://world.openfoodfacts.org/.
 Machine Vision Garbage Classification: https://huggingface.co/yangy50/garbage-classification.
 
 
-
-
+###CAD Models of proposed bin design can be found in the SolidWorks folder
+  The STL files directory contains .stl exports that can be opened without SolidWorks
+  The Parts directory contains all of the individual parts as .SLDPRT files
+  The Assembly/Parts directory contains a final assembly and the referenced parts which are all dupilcates of what's in the Parts directory. 
+    Exporting from solidworks can be inconsistent, if you are unable to view the parts please see the YouTube video along with the .stl files.
+  
 ### How to get started?
 
 1. Download all of the Python Scripts.
