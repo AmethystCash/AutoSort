@@ -1,11 +1,11 @@
 import gradio as gr
 
 gr.Interface.load("models/yangy50/garbage-classification").launch()
-# if the api doesn't work, execute the code snippet above, that usually fixes it after like a minute
+# if ml_scanner.py doesn't work, execute this, that usually fixes it after a few seconds
 
 
-# the actual machine learning part
-# getting packaging info from a picture
-"""import ml_api
+"""
+To see the barcode mechanism in action, run barcode_scanner.py
 
-ml_api.query("images/bottle.jpg")"""
+To see the machine learning mechanism in action, run ml_scanner.py
+"""

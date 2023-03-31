@@ -1,7 +1,8 @@
 import cv2
 from pyzbar.pyzbar import decode
+from barcode_api import print_barcode_info
 
-# get a barcode number from the camera
+# all barcode
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
@@ -11,9 +12,11 @@ while True:
     success, frame = cap.read()
 
     for code in decode(frame):
-        print(code.type)
-        print(code.data.decode('utf-8'))
+        # print(code.type)
+        print_barcode_info(code.data.decode('utf-8'))
         cv2.waitKey(1000)
+        
 
     cv2.imshow('Testing-code-scan', frame)
     cv2.waitKey(1)
+    
