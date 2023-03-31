@@ -38,7 +38,13 @@ Machine Vision Garbage Classification: https://huggingface.co/yangy50/garbage-cl
 ### How to get started?
 
 1. Download all of the Python Scripts.
-2. Install all the necessary packages.
+2. Install all the necessary packages:
+  - `reqests`
+  - `opencv-python`
+  - `pyzbar`
+  - `gradio`
+  - `os` (this one is most likely installed already by default)
+  - `python-dotenv`
 3. Create a `.env` file.
 4. Add an `API_KEY = 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` line to it (in case it fails, you can generate a new prototyping API key from the huggingface link provided above).
 5. Run `barcode_scanner.py` for the barcode script and `ml_scanner.py` for the machine vision script.
