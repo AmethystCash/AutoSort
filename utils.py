@@ -13,7 +13,7 @@ cred_obj = firebase_admin.credentials.Certificate('autosort-c230c-3aa20a6e2336.j
 default_app = firebase_admin.initialize_app(
     cred_obj, 
     {'databaseURL': "https://autosort-c230c-default-rtdb.europe-west1.firebasedatabase.app"})
-ref = db.reference("/bin1data") #bin1 db location
+ref = db.reference("/bin1data")  # bin1 db location
 
 
 trash_mapper = {
