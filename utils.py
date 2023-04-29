@@ -37,7 +37,14 @@ def get_material(frame):
 # the firebase push function
 
 def into_firebase(data):
-    print(f"pushing {data} to firebase")
+    
+    most_recent = time.strftime("%X %x")
+    package_num = ref.child(data).child("Total").get() # The value of the 'Total' key
+    package_num += 1
+    package_up = {"Total": package_num, "Time of Most Recent": most_recent}
+    ref.child(data).update(package_up) # Updates total and time
+    
+    print(ref.child(data).get())  # Prints the material data for testing purposes
     
     
 
