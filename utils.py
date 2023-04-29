@@ -10,18 +10,19 @@ from firebase_admin import db
 import json
 import time
 cred_obj = firebase_admin.credentials.Certificate('autosort-c230c-3aa20a6e2336.json')
-default_app = firebase_admin.initialize_app(cred_obj, {
-    'databaseURL': "https://autosort-c230c-default-rtdb.europe-west1.firebasedatabase.app"})
+default_app = firebase_admin.initialize_app(
+    cred_obj, 
+    {'databaseURL': "https://autosort-c230c-default-rtdb.europe-west1.firebasedatabase.app"})
 ref = db.reference("/bin1data") #bin1 db location
 
 
 trash_mapper = {
-    'paper': 'Paper',
-    'cardboard': 'Paper',
-    'metal': 'Plastic',
-    'plastic': 'Plastic',
-    'glass': 'Glass',
-    'trash': 'Misc',
+    'paper': 'paper',
+    'cardboard': 'paper',
+    'metal': 'plastic',
+    'plastic': 'plastic',
+    'glass': 'glass',
+    'trash': 'misc',
 }
 
 API_URL = "https://api-inference.huggingface.co/models/yangy50/garbage-classification"
@@ -48,14 +49,15 @@ def get_material(frame):
 # the firebase push function
 
 def into_firebase(data):
+    material = data['material']
     
     most_recent = time.strftime("%X %x")
-    package_num = ref.child(data).child("Total").get() # The value of the 'Total' key
+    package_num = ref.child(material).child("Total").get()  # The value of the 'Total' key
     package_num += 1
     package_up = {"Total": package_num, "Time of Most Recent": most_recent}
-    ref.child(data).update(package_up) # Updates total and time
+    ref.child(material).update(package_up)  # Updates total and time
     
-    print(ref.child(data).get())  # Prints the material data for testing purposes
+    print(ref.child(material).get())  # Prints the material data for testing purposes
     
     
 
@@ -63,10 +65,10 @@ def into_firebase(data):
 
 def open_door(material):
     door_mapper = {
-        'Plastic': 1,
-        'Glass': 2,
-        'Paper': 3,
-        'Misc': 4,
+        'plastic': 1,
+        'glass': 2,
+        'paper': 3,
+        'misc': 4,
     }
     # you can use either this or some if/else
     
