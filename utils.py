@@ -4,6 +4,17 @@ from dotenv import load_dotenv
 import cv2
 load_dotenv()
 
+# For firebase integration
+import firebase_admin
+from firebase_admin import db
+import json
+import time
+cred_obj = firebase_admin.credentials.Certificate('autosort-c230c-3aa20a6e2336.json')
+default_app = firebase_admin.initialize_app(cred_obj, {
+    'databaseURL': "https://autosort-c230c-default-rtdb.europe-west1.firebasedatabase.app"})
+ref = db.reference("/bin1data") #bin1 db location
+
+
 trash_mapper = {
     'paper': 'Paper',
     'cardboard': 'Paper',
