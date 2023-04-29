@@ -9,7 +9,7 @@ load_dotenv()
 """
 testing the main.py file with a static image
 """
-image_path = './testing-images/broken-glass.jpg'
+image_path = './testing-images/bottle.jpg'
 
 
 

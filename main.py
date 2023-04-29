@@ -92,8 +92,8 @@ while True:
             # idk what else do you want to be sent or in what format but feel free to edit this part
         }
         
-        into_firebase(data)
         open_door(material)
+        into_firebase(data)
 
     elif key == 27:  # press Esc to quit
         break
