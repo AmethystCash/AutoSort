@@ -5,12 +5,12 @@ import cv2
 load_dotenv()
 
 trash_mapper = {
-    'paper': 'paper',
-    'cardboard': 'paper',
-    'metal': 'plastic',
-    'plastic': 'plastic',
-    'glass': 'glass',
-    'trash': 'misc',
+    'paper': 'Paper',
+    'cardboard': 'Paper',
+    'metal': 'Plastic',
+    'plastic': 'Plastic',
+    'glass': 'Glass',
+    'trash': 'Misc',
 }
 
 API_URL = "https://api-inference.huggingface.co/models/yangy50/garbage-classification"
@@ -45,10 +45,10 @@ def into_firebase(data):
 
 def open_door(material):
     door_mapper = {
-        'plastic': 1,
-        'glass': 2,
-        'paper': 3,
-        'misc': 4,
+        'Plastic': 1,
+        'Glass': 2,
+        'Paper': 3,
+        'Misc': 4,
     }
     # you can use either this or some if/else
     
