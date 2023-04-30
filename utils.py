@@ -2,6 +2,8 @@ import requests
 import os
 from dotenv import load_dotenv
 import cv2
+import io
+import base64
 load_dotenv()
 
 # For firebase integration
@@ -29,9 +31,29 @@ API_URL = "https://api-inference.huggingface.co/models/yangy50/garbage-classific
 headers = {"Authorization": f"Bearer {os.getenv('API_KEY')}"}
 
 
+
+
+
+
+
+"""
+TODO: 
+1. divide this into a few python files (for example utils.py, firebase.py, discord.py, etc.)
+2. clean up the urls from above flying around
+3. error handling
+4. documentation
+"""
+
+
+
+
+
+
+
+
 # the function that tells us what material the object is made of
 
-def get_material(frame):
+def get_material_old(frame):
     _, img_encoded = cv2.imencode('.jpg', frame)
     response = requests.post(API_URL, headers=headers, data=img_encoded.tobytes())
     if response.ok:
@@ -43,6 +65,21 @@ def get_material(frame):
     else:
         print(f"Request failed with status code {response.status_code}")
         return trash_mapper['trash'], 0
+    
+    
+def get_material(img_bytes):
+    response = requests.post(API_URL, headers=headers, data=img_bytes)
+    if response.ok:
+        predictions = response.json()
+        print(predictions)
+        material = predictions[0]['label']
+        certainty = predictions[0]['score']
+        return trash_mapper[material], certainty
+    else:
+        print(f"Request failed with status code {response.status_code}")
+        return trash_mapper['trash'], 0
+    
+    
     
     
     
@@ -59,7 +96,42 @@ def into_firebase(data):
     
     print(ref.child(material).get())  # Prints the material data for testing purposes
     
+
+
+
+
+# a fun lil discord webhook, this way we can avoid restructuring the firebase
+
+def webhook_signal(data):
+    material = data['material']
+    certainty = data['certainty']
+    date = data['datetime'].strftime("%Y-%m-%d %H:%M:%S")
+    img = data['img_bytes']
     
+    embed = {
+        "title": f"{material.title()} ({certainty * 100:.2f}%)",
+        "description": "" if certainty != 0 else "The model did not respond :(",
+        "color": 0x00ff00 if certainty != 0 else 0xff0000,
+        "image": {"url": "attachment://image.jpg"},
+        "footer": {
+            "text": date
+        }
+    }
+    files = {
+        "image.jpg": img
+    }
+    payload = {
+        "payload_json": json.dumps({"embeds": [embed]})
+    }
+
+    url = f"https://discord.com/api/webhooks/{os.environ['webhook_url']}"
+    response = requests.post(url, data=payload, files=files)
+
+    print(f"Webhook signal response: {response.status_code}\n{response.content}")
+
+
+
+
 
 # the door opening function
 

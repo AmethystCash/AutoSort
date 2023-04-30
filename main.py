@@ -2,7 +2,8 @@ import gradio as gr
 import time
 import cv2
 import threading
-from utils import get_material, into_firebase, open_door
+import datetime
+from utils import get_material, into_firebase, open_door, webhook_signal
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -81,19 +82,21 @@ while True:
     if key == ord(' '):  # press SPACE (pretend that pressing SPACE is like throwing the trash in)
         time.sleep(1)  # wait 1 sec for the trash to fall in
 
-        image_path = './testing-images/bottle.jpg'
-        frame = cv2.imread(image_path)
-        material, certainty = get_material(frame)
+        _, img_encoded = cv2.imencode('.jpg', frame)
+        img_bytes = img_encoded.tobytes()
+        material, certainty = get_material(img_bytes)
         
-        # get other potential info, like time, or even the img itself
         data = {
             'material': material,
-            'certainty': certainty
-            # idk what else do you want to be sent or in what format but feel free to edit this part
+            'certainty': certainty,
+            'datetime': datetime.datetime.now(),
+            'img_bytes': img_bytes
         }
         
         open_door(material)
+        webhook_signal(data)
         into_firebase(data)
+        # that's why we need async (this takes a while of waiting)
 
     elif key == 27:  # press Esc to quit
         break
