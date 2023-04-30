@@ -8,12 +8,10 @@ load_dotenv()
 
 
 
-
-# Set up the message data
 embed = {
     "title": "Example Embed",
     "description": "This is an example of an embed message.",
-    "color": 16711680,  # Hex color code for "red"
+    "color": 16711680,
     "fields": [
         {
             "name": "Field 1",
@@ -32,12 +30,10 @@ data = {
     "embeds": [embed]
 }
 
-# Send the message via the webhook
 webhook_url = f"https://discord.com/api/webhooks/{os.environ['webhook_url']}"
 headers = {"Content-Type": "application/json"}
 response = requests.post(webhook_url, data=json.dumps(data), headers=headers)
 
-# Check the response status code
 if response.status_code != 204:
     print(f"Failed to send message with error code: {response.status_code}")
 else:
