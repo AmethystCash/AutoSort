@@ -37,6 +37,8 @@ Machine Vision Garbage Classification: https://huggingface.co/yangy50/garbage-cl
   
 ### How to get started?
 
+Disclaimer: the current method described below is outdated, the new code revamp is being worked on. However, you can still use it to experience the slightly more limited features.
+
 1. Download all of the Python Scripts.
 2. Install all the necessary packages:
   - `reqests`
