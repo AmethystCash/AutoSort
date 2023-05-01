@@ -36,8 +36,6 @@ headers = {"Authorization": f"Bearer {os.getenv('API_KEY')}"}
 
 """
 TODO: 
-1. divide this into a few python files (for example utils.py, firebase.py, discord.py, etc.)
-2. clean up the urls from above flying around
 3. error handling
 4. documentation
 """

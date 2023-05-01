@@ -3,7 +3,10 @@ import time
 import cv2
 import threading
 import datetime
-from utils import get_material, into_firebase, open_door, webhook_signal
+from utils.ml import get_material
+from utils.firebase import into_firebase
+from utils.webhook import webhook_signal
+from utils.doors import open_door
 from dotenv import load_dotenv
 load_dotenv()
 
