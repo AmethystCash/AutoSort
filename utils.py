@@ -2,8 +2,6 @@ import requests
 import os
 from dotenv import load_dotenv
 import cv2
-import io
-import base64
 load_dotenv()
 
 # For firebase integration
