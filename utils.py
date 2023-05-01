@@ -13,7 +13,7 @@ cred_obj = firebase_admin.credentials.Certificate('autosort-c230c-3aa20a6e2336.j
 default_app = firebase_admin.initialize_app(
     cred_obj, 
     {'databaseURL': "https://autosort-c230c-default-rtdb.europe-west1.firebasedatabase.app"})
-ref = db.reference("/bin1data")  # bin1 db location
+ref = db.reference("/bin1-entries")  # bin1 db location
 
 
 trash_mapper = {
@@ -85,14 +85,17 @@ def get_material(img_bytes):
 
 def into_firebase(data):
     material = data['material']
+    accuracy = data['certainty']
     
-    most_recent = time.strftime("%X %x")
-    package_num = ref.child(material).child("Total").get()  # The value of the 'Total' key
-    package_num += 1
-    package_up = {"Total": package_num, "Time of Most Recent": most_recent}
-    ref.child(material).update(package_up)  # Updates total and time
-    
-    print(ref.child(material).get())  # Prints the material data for testing purposes
+    most_recent = time.strftime("%X %x")  # format: hr:min:sec dd/mm/yy
+    entries_len = len(ref.get())
+    entry_set = {"Accuracy %": accuracy, "Time": most_recent, "Type": material}
+    #test_set = {"Test": "test"}
+
+    entry_num = entries_len
+    entry_name = str(entry_num)
+    ref.child(entry_name).update(entry_set)
+    print(f"Firebase entries length: {entries_len}")
     
 
 
@@ -103,7 +106,7 @@ def into_firebase(data):
 def webhook_signal(data):
     material = data['material']
     certainty = data['certainty']
-    date = data['datetime'].strftime("%Y-%m-%d %H:%M:%S")
+    date = data['datetime']
     img = data['img_bytes']
     
     embed = {

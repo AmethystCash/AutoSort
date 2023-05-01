@@ -89,7 +89,7 @@ while True:
         data = {
             'material': material,
             'certainty': certainty,
-            'datetime': datetime.datetime.now(),
+            'datetime': time.strftime("%X %x"), # format: hr:min:sec dd/mm/yy,
             'img_bytes': img_bytes
         }
         
