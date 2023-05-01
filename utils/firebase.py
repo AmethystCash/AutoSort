@@ -1,6 +1,5 @@
 import firebase_admin
 from firebase_admin import db
-import time
 
 cred_obj = firebase_admin.credentials.Certificate('autosort-c230c-3aa20a6e2336.json')
 default_app = firebase_admin.initialize_app(
