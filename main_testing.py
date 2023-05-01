@@ -2,18 +2,18 @@ import gradio as gr
 import time
 import cv2
 import threading
-import datetime
 from utils.ml import get_material
 from utils.firebase import into_firebase
 from utils.webhook import webhook_signal
 from utils.doors import open_door
+from utils.misc import rn_fancy
 from dotenv import load_dotenv
 load_dotenv()
 
 """
 testing the main.py file with a static image
 """
-image_path = './testing-images/paper.jpeg'
+image_path = './testing-images/spaghett.jpg'
 
 
 
@@ -48,7 +48,7 @@ while True:
         data = {
             'material': material,
             'certainty': certainty,
-            'datetime': time.strftime("%X %x"), # format: hr:min:sec dd/mm/yy
+            'datetime': rn_fancy(),
             'img_bytes': img_bytes
         }
         

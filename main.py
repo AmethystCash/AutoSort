@@ -2,11 +2,11 @@ import gradio as gr
 import time
 import cv2
 import threading
-import datetime
 from utils.ml import get_material
 from utils.firebase import into_firebase
 from utils.webhook import webhook_signal
 from utils.doors import open_door
+from utils.misc import rn_fancy
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -26,29 +26,36 @@ currently the thing works like this:
 3. you press space (pretend that that means throwing a piece of trash into the bin)
 4. that triggers the object recognition model to run on the current frame
 5. you get back packaging info
-6. you send that info to firebase
+6. you send that info to firebase and discord
 7. you open a door
 
 the only files we have to worry about now are:
 - main.py - the program runs here
-- utils.py - contains the object recognition, firebase and door functions
 - main_testing.py - testing with static images
+- utils:
+    - ml.py - object recognition model
+    - firebase.py - firebase stuff
+    - webhook.py - discord webhook stuff
+    - doors.py - door opening stuff
+    - misc.py - helper functions
 
 
 
 --Remarks--
 
-rn the firebase/door functions both just print stuff to the console
-feel free to edit them to your liking
-and feel free to edit the data format in the main loop too
+rn the door function just prints stuff to the console, to be edited later
 
 I don't know how to incorporate the barcode reader into this
-but if we want to do that we can just create a function for that in utils.py and then use it here
+but if we want to do that we can just create a function for that in `utils` and then use it here
 
 sometimes it might take longer for the object recognition model to load
 even if it says it's done loading
 I'm not sure how to solve this yet
 but it shouldn't be a big issue since it only happens at the start
+
+the repo was cleaned up recently
+the old files (such as the barcode scanner) are in the `legacy-code` directory
+the readme will be updated soon to reflect this
 """
 
 
@@ -92,7 +99,7 @@ while True:
         data = {
             'material': material,
             'certainty': certainty,
-            'datetime': time.strftime("%X %x"), # format: hr:min:sec dd/mm/yy,
+            'datetime': rn_fancy(),
             'img_bytes': img_bytes
         }
         

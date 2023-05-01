@@ -2,7 +2,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
-from utils.utils import webhook_signal
+from utils.webhook import webhook_signal
 load_dotenv()
 
 
