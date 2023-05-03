@@ -13,7 +13,7 @@ load_dotenv()
 """
 testing the main.py file with a static image
 """
-image_path = './testing-images/spaghett.jpg'
+image_path = './testing-images/rock.jpg'
 
 
 
@@ -55,7 +55,6 @@ while True:
         open_door(material)
         webhook_signal(data)
         into_firebase(data)
-        # that's why we need async
 
     elif key == 27:  # press Esc to quit
         break
