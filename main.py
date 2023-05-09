@@ -10,6 +10,12 @@ from utils.misc import rn_fancy
 from dotenv import load_dotenv
 load_dotenv()
 
+from gpiozero import AngularServo
+from time import sleep
+servo =AngularServo(18, min_angle=0, max_angle=180, min_pulse_width=0.0005, max_pulse_width=0.0025)
+servo2 =AngularServo(17, min_angle=0, max_angle=180, min_pulse_width=0.0005, max_pulse_width=0.0025)
+
+
 """
 hi guys
 
@@ -77,6 +83,11 @@ while True:
         print("server has loaded successfully!")
         break
 
+#setting servo angles
+servo.angle = 140
+servo2.angle = 140
+
+#starting camera
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
@@ -103,7 +114,18 @@ while True:
             'img_bytes': img_bytes
         }
         
-        open_door(material)
+        #open_door(material)
+
+        if(material == 'plastic'):
+            servo2.angle = 70
+            sleep(5)
+            servo2.angle = 140
+             
+        elif (material == 'paper'):
+            servo.angle = 70
+            sleep(5)
+            servo.angle = 140
+            
         webhook_signal(data)
         into_firebase(data)
         # that's why we need async (this takes a while of waiting)
