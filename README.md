@@ -6,34 +6,32 @@ As students, we noticed a growing problem in our university cafeteria. People wo
 
 ## The solution
 
-AutoSort! A bin that can automate the process of sorting rubbish for you. It does so by utilizing a barcode scanner, Open Food Facts API and the Machine vision Garbage Classification API
+AutoSort! A bin that can automate the process of sorting rubbish for you. It does so by utilizing machine vision and a garbage classification model from HuggingFace.
 
 ## The setup
 
 We're using a RaspberryPi 4 to run our scripts. That part is located in our 3d-printed bin. You can see our initial design down below.
 
-![alt text](./readme-images/bin-sketch.jpg)
+![bin sketch](./readme-images/bin-sketch.jpg)
 
-To open and close the individual bins we will use Linear Actuators
+To open and close the individual doors we use servos.
 
+## SolidWorks models 
 
+Models of proposed bin design can be found in the SolidWorks folder. The STL files directory contains .stl exports that can be opened without SolidWorks. The Parts directory contains all of the individual parts as .SLDPRT files. The Assembly/Parts directory contains a final assembly and the referenced parts which are all dupilcates of what's in the Parts directory. 
+
+Exporting from solidworks can be inconsistent, if you are unable to view the parts please see the YouTube video under [AutoSort in action](#autosort-in-action) along with the .stl files.
 
 ## How does it work?
 
-Every time the bin is opened we will take a snapshot of what's in the bin. We then look for a barcode, if nothing is found we send a request to the Machine vision API to determine what's in the bin. Then the bin opens one of it's compartments for the rubbish to fall into. Here's a flow-chart ilustrating that process:
+Every time the bin is opened we will take a snapshot of what's in the bin. We then send that image to a garbage classificaion model which tells us the packaging information. Then the bin opens one of it's compartments for the rubbish to fall into. In addition to that we also send the information to discord, and firebase for data analysis and visualization. 
 
-![alt text](./readme-images/code-graph.png)
+Here's a flow-chart ilustrating that process:
 
-Open Food Facts: https://world.openfoodfacts.org/.
-
-Machine Vision Garbage Classification: https://huggingface.co/yangy50/garbage-classification.
+![code flow-chart](./readme-images/code-graph.png)
 
 
-## CAD Models of proposed bin design can be found in the SolidWorks folder
-  The STL files directory contains .stl exports that can be opened without SolidWorks.
-  The Parts directory contains all of the individual parts as .SLDPRT files.
-  The Assembly/Parts directory contains a final assembly and the referenced parts which are all dupilcates of what's in the Parts directory. 
-    Exporting from solidworks can be inconsistent, if you are unable to view the parts please see the YouTube video along with the .stl files.
+
   
 ## How to get started?
 
@@ -75,3 +73,6 @@ Now you can see live updates from AutoSort in discord!
 2. 3D Print the model of the bin
 3. Change from using space bar as a trigger to using the door sensor.
 4. First full deploy 
+
+## Credits
+- yangy50, for the garbage classification model, you can check it out here: https://huggingface.co/yangy50/garbage-classification.
