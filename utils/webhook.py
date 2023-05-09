@@ -1,10 +1,11 @@
 import requests
 import json
 import os
+from colorama import Fore, Back, Style
 from dotenv import load_dotenv
 load_dotenv()
 
-
+url = f"https://discord.com/api/webhooks/{os.environ['webhook_url']}"
 
 def webhook_signal(data):
     material = data['material']
@@ -28,7 +29,10 @@ def webhook_signal(data):
         "payload_json": json.dumps({"embeds": [embed]})
     }
 
-    url = f"https://discord.com/api/webhooks/{os.environ['webhook_url']}"
     response = requests.post(url, data=payload, files=files)
 
-    print(f"Webhook signal response: {response.status_code}\n{response.content}")
+    if response.ok:
+        print(Fore.GREEN + f"Webhook signal successful (status code: {response.status_code})" + Style.RESET_ALL)
+    else:
+        print(Fore.RED + f"Webhook signal failed (status code: {response.status_code})" + Style.RESET_ALL)
+        

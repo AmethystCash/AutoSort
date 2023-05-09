@@ -2,38 +2,31 @@ import gradio as gr
 import time
 import cv2
 import threading
+from colorama import Fore, Back, Style
 from utils.ml import get_material
 from utils.firebase import into_firebase
 from utils.webhook import webhook_signal
-from utils.doors import open_door
-from utils.misc import rn_fancy
+from utils.doors import open_door, servo_setup
+from utils.misc import rn_fancy, big_fancy_title4
 from dotenv import load_dotenv
 load_dotenv()
 
-from gpiozero import AngularServo
-from time import sleep
-servo =AngularServo(18, min_angle=0, max_angle=180, min_pulse_width=0.0005, max_pulse_width=0.0025)
-servo2 =AngularServo(17, min_angle=0, max_angle=180, min_pulse_width=0.0005, max_pulse_width=0.0025)
-
-
 """
-hi guys
-
 this is a code revamp done on 29/04/2023
 hopefully now it's easier to understand and work with
 
 
 
---Essential info--
+=== Essential info ===
 
 currently the thing works like this:
-1. load the object recognition model
+1. set up the object recognition model and the servos
 2. start the main loop
 3. you press space (pretend that that means throwing a piece of trash into the bin)
 4. that triggers the object recognition model to run on the current frame
 5. you get back packaging info
-6. you send that info to firebase and discord
-7. you open a door
+6. you open the door corresponding to the packaging
+7. you send that info to firebase and discord
 
 the only files we have to worry about now are:
 - main.py - the program runs here
@@ -47,26 +40,34 @@ the only files we have to worry about now are:
 
 
 
---Remarks--
+=== Remarks ===
 
-rn the door function just prints stuff to the console, to be edited later
-
-I don't know how to incorporate the barcode reader into this
+I don't know how to incorporate the barcode reader into this yet
 but if we want to do that we can just create a function for that in `utils` and then use it here
 
-sometimes it might take longer for the object recognition model to load
-even if it says it's done loading
+sometimes it might take longer for the object recognition model to load, even if it says it's done loading
 I'm not sure how to solve this yet
 but it shouldn't be a big issue since it only happens at the start
 
 the repo was cleaned up recently
 the old files (such as the barcode scanner) are in the `legacy-code` directory
 the readme will be updated soon to reflect this
+
+
+
+=== TODO ===
+
+- improve how the setup is done by using more functions
+- have a proper setup for the firebase/webhook/servos etc
+
 """
 
 
 
 # THE SETUP
+print(big_fancy_title4)
+print(Fore.MAGENTA + "\n===== SETUP STARTING =====\n" + Style.RESET_ALL)
+
 def load_server():
     gr.Interface.load("models/yangy50/garbage-classification")
     return True 
@@ -74,23 +75,24 @@ def load_server():
 interface_thread = threading.Thread(target=load_server)
 interface_thread.start()
 
-print("starting server loading...")
+print(Fore.YELLOW + "Starting server loading..." + Style.RESET_ALL)
 while True:
     if interface_thread.is_alive():
-        print("waiting...")
+        print("Waiting...")
         time.sleep(1)
     else:
-        print("server has loaded successfully!")
+        print(Fore.GREEN + "Server has loaded successfully!\n" + Style.RESET_ALL)
         break
 
-#setting servo angles
-servo.angle = 140
-servo2.angle = 140
+# servo angles setup
+servo_setup()
 
-#starting camera
+# starting camera
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
+
+print(Fore.MAGENTA + "\n===== SETUP DONE =====\n" + Style.RESET_ALL)
 
 
 
@@ -114,18 +116,7 @@ while True:
             'img_bytes': img_bytes
         }
         
-        #open_door(material)
-
-        if(material == 'plastic'):
-            servo2.angle = 70
-            sleep(5)
-            servo2.angle = 140
-             
-        elif (material == 'paper'):
-            servo.angle = 70
-            sleep(5)
-            servo.angle = 140
-            
+        open_door(material)
         webhook_signal(data)
         into_firebase(data)
         # that's why we need async (this takes a while of waiting)
@@ -135,31 +126,3 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-# old relics below
-
-"""
-import gradio as gr
-
-gr.Interface.load("models/yangy50/garbage-classification").launch()
-# if ml_scanner.py doesn't work, execute this, that usually fixes it after a few seconds
-"""
-
-"""
-To see the barcode mechanism in action, run barcode_scanner.py
-
-To see the machine learning mechanism in action, run ml_scanner.py
-"""
