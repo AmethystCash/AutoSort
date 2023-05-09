@@ -30,7 +30,7 @@ Every time the bin is opened we will take a snapshot of what's in the bin. We th
 
 Here's a flow-chart ilustrating that process:
 
-![code flow-chart](./readme-images/code-graph.png)
+![code flow-chart](./readme-images/code-graph-new-whitebg.jpg)
 
 
 
