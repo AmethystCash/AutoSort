@@ -4,11 +4,11 @@
 
 As students, we noticed a growing problem in our university cafeteria. People would often have trouble with recycling and picking the right bin to throw their trash into. Nowadays those bins aren't available to us, we have to leave all of the trash in one general bin which then gets sorted by other workers. 
 
-### The solution
+## The solution
 
 AutoSort! A bin that can automate the process of sorting rubbish for you. It does so by utilizing a barcode scanner, Open Food Facts API and the Machine vision Garbage Classification API
 
-### The setup
+## The setup
 
 We're using a RaspberryPi 4 to run our scripts. That part is located in our 3d-printed bin. You can see our initial design down below.
 
@@ -18,7 +18,7 @@ To open and close the individual bins we will use Linear Actuators
 
 
 
-### How does it work?
+## How does it work?
 
 Every time the bin is opened we will take a snapshot of what's in the bin. We then look for a barcode, if nothing is found we send a request to the Machine vision API to determine what's in the bin. Then the bin opens one of it's compartments for the rubbish to fall into. Here's a flow-chart ilustrating that process:
 
@@ -29,13 +29,13 @@ Open Food Facts: https://world.openfoodfacts.org/.
 Machine Vision Garbage Classification: https://huggingface.co/yangy50/garbage-classification.
 
 
-### CAD Models of proposed bin design can be found in the SolidWorks folder
+## CAD Models of proposed bin design can be found in the SolidWorks folder
   The STL files directory contains .stl exports that can be opened without SolidWorks.
   The Parts directory contains all of the individual parts as .SLDPRT files.
   The Assembly/Parts directory contains a final assembly and the referenced parts which are all dupilcates of what's in the Parts directory. 
     Exporting from solidworks can be inconsistent, if you are unable to view the parts please see the YouTube video along with the .stl files.
   
-### How to get started?
+## How to get started?
 
 1. Clone the repository.
 2. Install/import all the necessary packages:
@@ -56,17 +56,20 @@ Machine Vision Garbage Classification: https://huggingface.co/yangy50/garbage-cl
 5. You can now run the `main_testing.py` file.
 
 #### Disclaimer: 
-With that you won't be able to use our discord webhook, firebase, and especially the bin itself. If you wish to experience the live webhook feature follow the next few steps:
-6. Create a webhook in one of your discord channels.
-7. Copy the webhook key and paste a `WEBHOOK_KEY = your webhook key goes here add it here` line to the `.env` file.
 
-Now you 
+With that you won't be able to use our discord webhook/firebase features. If you wish to experience the live webhook feature follow the next few steps:
 
-### AutoSort in action
+6. Create a discord server.
+7. Add a webhook in one of your discord channels.
+8. Copy the webhook key and paste a `WEBHOOK_URL = your webhook url goes here add it here` line to the `.env` file.
+
+Now you can see live updates from AutoSort in discord!
+
+## AutoSort in action
 
 (videos and images of autosort doing autosort, coming soon)
 
-### Roadmap
+## Roadmap
 
 1. Convert precise type of rubbish to(for example can, bottle or paper) to which bin should open.
 2. 3D Print the model of the bin
