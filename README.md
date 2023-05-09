@@ -37,19 +37,30 @@ Machine Vision Garbage Classification: https://huggingface.co/yangy50/garbage-cl
   
 ### How to get started?
 
-Disclaimer: the current method described below is outdated, the new code revamp is being worked on. However, you can still use it to experience the slightly more limited features.
-
-1. Download all of the Python Scripts.
-2. Install all the necessary packages:
+1. Clone the repository.
+2. Install/import all the necessary packages:
+  - `os`
+  - `time`
+  - `threading`
+  - `colorama`
+  - `inflect`
   - `reqests`
+  - `json`
   - `opencv-python`
-  - `pyzbar`
   - `gradio`
-  - `os` (this one is most likely installed already by default)
+  - `gpiozero`
+  - `firebase_admin`
   - `python-dotenv`
 3. Create a `.env` file.
 4. Add an `API_KEY = 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` line to it (in case it fails, you can generate a new prototyping API key from the huggingface link provided above).
-5. Run `barcode_scanner.py` for the barcode script and `ml_scanner.py` for the machine vision script.
+5. You can now run the `main_testing.py` file.
+
+#### Disclaimer: 
+With that you won't be able to use our discord webhook, firebase, and especially the bin itself. If you wish to experience the live webhook feature follow the next few steps:
+6. Create a webhook in one of your discord channels.
+7. Copy the webhook key and paste a `WEBHOOK_KEY = your webhook key goes here add it here` line to the `.env` file.
+
+Now you 
 
 ### AutoSort in action
 
