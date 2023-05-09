@@ -38,7 +38,7 @@ Machine Vision Garbage Classification: https://huggingface.co/yangy50/garbage-cl
 ## How to get started?
 
 1. Clone the repository.
-2. Install/import all the necessary packages:
+2. Install all the necessary packages:
   - `os`
   - `time`
   - `threading`
