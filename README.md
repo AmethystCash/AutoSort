@@ -14,6 +14,8 @@ We're using a RaspberryPi 4 to run our scripts. That part is located in our 3d-p
 
 ![bin sketch](./readme-images/bin-sketch.jpg)
 
+To take pictures of the trash that falls in the bin we're currently using a regular webcam. We're planning to upgrade it to a picamera in the future.
+
 To open and close the individual doors we use servos.
 
 ## SolidWorks models 
@@ -36,7 +38,8 @@ Here's a flow-chart ilustrating that process:
 ## How to get started?
 
 1. Clone the repository.
-2. Install all the necessary packages:
+2. Make sure that you have some kind of a camera/webcam connected to your device.
+3. Install all the necessary packages:
   - `os`
   - `time`
   - `threading`
@@ -49,17 +52,17 @@ Here's a flow-chart ilustrating that process:
   - `gpiozero`
   - `firebase_admin`
   - `python-dotenv`
-3. Create a `.env` file.
-4. Add an `API_KEY = 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` line to it (in case it fails, you can generate a new prototyping API key from the huggingface link provided above).
-5. You can now run the `main_testing.py` file.
+4. Create a `.env` file.
+5. Add an `API_KEY = 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` line to it (in case it fails, you can generate a new prototyping API key from the HuggingFace link provided [here](https://huggingface.co/yangy50/garbage-classification)).
+6. You can now run the `main_testing.py` file.
 
-#### Disclaimer: 
+### Disclaimer: 
 
 With that you won't be able to use our discord webhook/firebase features. If you wish to experience the live webhook feature follow the next few steps:
 
-6. Create a discord server.
-7. Add a webhook in one of your discord channels.
-8. Copy the webhook key and paste a `WEBHOOK_URL = your webhook url goes here add it here` line to the `.env` file.
+7. Create a discord server.
+8. Add a webhook in one of your discord channels.
+9. Copy the webhook key and paste a `WEBHOOK_URL = your webhook url goes here add it here` line to the `.env` file.
 
 Now you can see live updates from AutoSort in discord!
 
