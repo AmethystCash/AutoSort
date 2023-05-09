@@ -5,7 +5,7 @@ from colorama import Fore, Back, Style
 from dotenv import load_dotenv
 load_dotenv()
 
-url = f"https://discord.com/api/webhooks/{os.environ['webhook_url']}"
+url = f"https://discord.com/api/webhooks/{os.environ['WEBHOOK_KEY']}"
 
 def webhook_signal(data):
     material = data['material']
