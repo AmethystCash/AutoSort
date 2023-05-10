@@ -3,6 +3,8 @@ import pytz
 import firebase_admin
 from firebase_admin import db
 import json
+import matplotlib.pyplot as plt
+import io
 import os
 import inflect
 p = inflect.engine()
@@ -27,7 +29,6 @@ def get_all_totals(packaging):
         mattotals[packaging[x]] = perbin[x]
 
     return mattotals
-{}
 
 
 def get_total(material):
@@ -37,9 +38,9 @@ def get_total(material):
 
     firebase_convert = list(
         datain)  # converts to list for next line to get the object indexing
-    firebase_convert.pop(0)  #removing the 0th entry of firebase
+    firebase_convert.pop(0)  # removing the 0th entry of firebase
 
-    for x in range(len(datain) - 1):  # -1 due to removing blank 0th entry
+    for x in range(len(firebase_convert)):
         entry_listing = dict(
             firebase_convert[x]
         )  # converts list from before into usable dictionary to find material val per entry
@@ -48,7 +49,7 @@ def get_total(material):
             count += 1
 
     return count
-{}
+        
 
 
 def rn_fancy():
@@ -56,4 +57,37 @@ def rn_fancy():
     day = int(rn.strftime('%e'))
     nice_datetime = rn.strftime(f"%X - %B {p.ordinal(day)} %Y")
     return nice_datetime
-{}
+
+
+
+
+def get_all_useful_data():
+    data =  list(ref.get())
+    data.pop(0)   
+    return data
+
+
+def get_totals():
+    # definig it inside so that it could access the data from above without leaking outside
+    def get_amount(packaging):
+        count = 0
+        
+        for item in data:
+            if item['Type'] == packaging:
+                count += 1
+    
+        # print(count)
+        # print(len(list(filter(lambda p: p['Type'] == packaging, data))))
+        # print(len([p['Type'] for p in data if p['Type'] == packaging]))
+        # funny one-liners equivalent to the for loop
+        
+        return count
+    
+    data = get_all_useful_data()
+
+    packagings = ['plastic', 'paper', 'glass', 'misc']
+    amounts = [get_amount(p) for p in packagings]
+    joined = dict(zip(packagings, amounts))
+
+    return joined
+
