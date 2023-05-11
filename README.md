@@ -26,7 +26,7 @@ Exporting from solidworks can be inconsistent, if you are unable to view the par
 
 ## How does it work?
 
-Every time the bin is opened we will take a snapshot of what's in the bin. We then send that image to a garbage classificaion model which tells us the packaging information. Then the bin opens one of it's compartments for the rubbish to fall into. In addition to that we also send the information to discord, and firebase for data analysis and visualization. 
+Every time something is thrown into the bin, we take a picture of it. We then send that image to a garbage classification model which tells us the packaging information. Then the bin opens one of its compartments for the rubbish to fall into. In addition to that we also send the information to discord, and firebase for data analysis and visualization.
 
 Here's a flow-chart ilustrating that process:
 
