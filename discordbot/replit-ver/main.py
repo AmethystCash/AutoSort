@@ -1,11 +1,9 @@
 import os
-import io
 import discord
 from discord.ext import commands
-from discord.ui import Select, View
-import matplotlib.pyplot as plt
-import asyncio
-from helpers import *
+from discord.ui import View
+from firebase import *
+from charts import charts
 from keep_alive import keep_alive
 
 
@@ -29,120 +27,13 @@ async def ping(ctx):
 {}
 
 
-@bot.tree.command(name="barchart", description="get a bar chart")
-async def barchart(interaction: discord.Interaction):
-    packaging = ['plastic', 'paper', 'glass', 'misc']
-    mattotals = get_all_totals(packaging)
-
-    # this makes sending files possible (without having to save them)
-    img_data = io.BytesIO()
-
-    plt.clf()  # blank graph before graphing
-
-    for x in range(len(mattotals)):
-        plt.bar(packaging[x], mattotals[packaging[x]])
-        
-    plt.savefig(img_data, format='png')
-    img_data.seek(0)
-    f = discord.File(img_data, filename="barchart.png")
-
-    embed = discord.Embed(
-        title="Bar Chart", color=discord.Color.blurple())
-    embed.set_image(
-        url="attachment://barchart.png")
-    embed.set_footer(
-        text=rn_fancy())
-
-    await interaction.response.send_message(embed=embed, file=f)
-
-
-
-@bot.tree.command(name="piechart", description="get a pie chart")
-async def piechart(interaction: discord.Interaction):
-    packaging = ['plastic', 'paper', 'glass', 'misc']
-    mattotals = get_all_totals(packaging)
-
-    # this makes sending files possible (without having to save them)
-    img_data = io.BytesIO()
-
-    plt.clf()  # blank graph before graphing
-
-    # create the pie chart with the totals and labels
-    plt.pie(list(mattotals.values()), labels=list(mattotals.keys()))
-
-    plt.savefig(img_data, format='png')
-    img_data.seek(0)
-    f = discord.File(img_data, filename="piechart.png")
-
-    embed = discord.Embed(
-        title="Pie Chart", color=discord.Color.blurple())
-    embed.set_image(
-        url="attachment://piechart.png")
-    embed.set_footer(
-        text=rn_fancy())
-
-    await interaction.response.send_message(embed=embed, file=f)
-
-
-
-def generate_barchart(totals):
-    img_data = io.BytesIO()
-    plt.clf()
-
-    plt.bar(list(totals.keys()), list(totals.values()))
-
-    plt.savefig(img_data, format='png')
-    img_data.seek(0)
-    f = discord.File(img_data, filename="piechart.png")
-
-    return f
-{}
-
-
-def generate_piechart(totals):
-    img_data = io.BytesIO()
-    plt.clf()
-
-    plt.pie(list(totals.values()), labels=list(totals.keys()))
-
-    plt.savefig(img_data, format='png')
-    img_data.seek(0)
-    f = discord.File(img_data, filename="piechart.png")
-
-    return f
-{}
-
-
-
-charts = {
-    'Bar chart': {
-        'emoji': '📊',
-        'short_desc': 'Representing the amounts of each material',
-
-        'long_desc': '',
-        'image_gen': lambda totals: generate_barchart(totals)
-    },
-    'Pie chart': {
-        'emoji': '🥧',
-        'short_desc': 'Representing the percentages of each material',
-
-        'long_desc': '',
-        'image_gen': lambda totals: generate_piechart(totals)
-    }
-}
-
-
-@bot.tree.command(name="stats", description="Data collected from AutoSort in many forms")
-async def stats(interaction: discord.Interaction):
-    await interaction.response.defer()  # wait for firebase
-    totals = get_totals()
-
-    embed = discord.Embed(
-        title="Statistics and data visualization",
-        description="Explore various statistics and performance metrics of AutoSort, our cutting-edge automated sorting system.",
-        color=discord.Color.blurple())
+class StatsView(View):
+    def __init__(self, data):
+        super().__init__(timeout=60)
+        self.data = data
+        self.message = None  # to keep track of the correct message
     
-    select = Select(
+    @discord.ui.select(
         placeholder="Pick a chart",
         options=[
             discord.SelectOption(
@@ -152,14 +43,11 @@ async def stats(interaction: discord.Interaction):
             ) for option in charts
         ]
     )
-
-    view = View(timeout=60)
-    view.add_item(select)
-
-    async def my_callback(interaction):
+    async def select_callback(self, interaction, select):
         choice = select.values[0]
         chart = charts[choice]
-        image_file = chart['image_gen'](totals)
+        image = chart['image_gen'](self.data)
+        image_file = discord.File(image, filename="chart.png")
         
         embed = discord.Embed(
             title=choice,
@@ -170,12 +58,29 @@ async def stats(interaction: discord.Interaction):
         embed.set_footer(
             text=rn_fancy())
     
-        await interaction.response.edit_message(embed=embed, attachments=[image_file], view=view)
+        await interaction.response.edit_message(embed=embed, attachments=[image_file], view=self)
 
-    select.callback = my_callback
+    async def on_timeout(self):
+        for item in self.children:
+            item.disabled = True
 
-    await interaction.followup.send(embed=embed, view=view)
-{}
+        await self.message.edit(view=self)
+
+        
+@bot.tree.command(name="stats", description="Data collected from AutoSort in many forms")
+async def stats(interaction: discord.Interaction):
+    await interaction.response.defer()  # wait because...
+    data = get_all_useful_data()        # because firebase
+
+    view = StatsView(data)
+
+    embed = discord.Embed(
+        title="Statistics and data visualization",
+        description="Explore various statistics and performance metrics of AutoSort, our cutting-edge automated sorting system.",
+        color=discord.Color.blurple())
+    
+    message = await interaction.followup.send(view=view, embed=embed)
+    view.message = message
 
 
 keep_alive()
