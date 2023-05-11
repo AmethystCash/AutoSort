@@ -1,16 +1,12 @@
 # AutoSort
 
-### The problem
-
 As students, we noticed a growing problem in our university cafeteria. People would often have trouble with recycling and picking the right bin to throw their trash into. Nowadays those bins aren't available to us, we have to leave all of the trash in one general bin which then gets sorted by other workers. 
 
-## The solution
-
-AutoSort! A bin that can automate the process of sorting rubbish for you. It does so by utilizing machine vision and a garbage classification model from HuggingFace.
+That's what motivated us to create AutoSort. A bin that can automate the process of sorting rubbish for you. It does so by utilizing machine vision and a garbage classification machine learning model.
 
 ## The setup
 
-We're using a RaspberryPi 4 to run our scripts. That part is located in our 3d-printed bin. You can see our initial design down below.
+We're using a RaspberryPi 4 B to run our scripts. That part is located in our 3d-printed bin. You can see our initial design down below.
 
 ![bin sketch](./readme-images/bin-sketch.jpg)
 
@@ -53,7 +49,7 @@ Here's a flow-chart ilustrating that process:
   - `firebase_admin`
   - `python-dotenv`
 4. Create a `.env` file.
-5. Add an `API_KEY = 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` line to it (in case it fails, you can generate a new prototyping API key from the HuggingFace link provided [here](https://huggingface.co/yangy50/garbage-classification)).
+5. Add an `API_KEY = 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` line to it (in case it fails, you can generate a new prototyping API key from the link provided [here](https://huggingface.co/yangy50/garbage-classification)).
 6. You can now run the `main_testing.py` file.
 
 ### Disclaimer: 
@@ -68,14 +64,12 @@ Now you can see live updates from AutoSort in discord!
 
 ## AutoSort in action
 
-(videos and images of autosort doing autosort, coming soon)
-
-## Roadmap
-
-1. Convert precise type of rubbish to(for example can, bottle or paper) to which bin should open.
-2. 3D Print the model of the bin
-3. Change from using space bar as a trigger to using the door sensor.
-4. First full deploy 
+Down below you can see some images of our system.
+![AutoSort trial](./readme-images/autosort-trial.png)
+![Sorting successful](./readme-images/autosort-trial-success.png)
+![Result in discord](./readme-images/autosort-trial-phone.png)
 
 ## Credits
+
 - yangy50, for the garbage classification model, you can check it out here: https://huggingface.co/yangy50/garbage-classification.
+- [marloft](https://github.com/marloft), our IoT teacher for keeping us motivated and helping us with the issues we encountered along the way.
